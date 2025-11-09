@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Alarm04.wav" />
+    <None Remove="Ring01.wav" />
+    <None Remove="time.ico" />
+    <None Remove="time.png" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Resource Include="Resources\Alarm04.wav" />
+    <Resource Include="app.ico" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="HandyControl" Version="3.5.1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Resource Include="Resources\Ring01.wav" />
+    <Resource Include="Resources\time.ico" />
+    <Resource Include="Resources\time.png" />
+  </ItemGroup>
+
+</Project>
