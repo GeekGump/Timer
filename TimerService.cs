@@ -14,16 +14,36 @@ namespace Timer
         private readonly DispatcherTimer _timer;
         private DateTime _sessionStartTime;
         private TimeSpan _sessionDuration;
-
+        private TimeSpan _todayTotalUsage;
         public TimerModel Model { get; }
-        public TimeSpan TodayTotalUsage { get; set; }
+
+        public TimeSpan TodayTotalUsage
+        {
+            get
+            {
+                if (OpenDate != DateTime.Today)
+                {
+                    OpenDate = DateTime.Today;
+                    _todayTotalUsage = TimeSpan.Zero;
+                }
+                return _todayTotalUsage;
+            }
+            set
+            {
+                _todayTotalUsage = value;
+            }
+        }
+        
         public DateTime CurrentSessionStart { get; private set; }
 
         public event Action<string> NotificationRequested;
 
+        public DateTime OpenDate;
+
         public TimerService(TimerModel model)
         {
             Model = model;
+            OpenDate = DateTime.Today;
             //_timer = new SysTimer(1000); // 1秒间隔
             //_timer.Elapsed += OnTimerElapsed;
             _timer = new DispatcherTimer
@@ -62,7 +82,8 @@ namespace Timer
 
             if (CurrentSessionStart != DateTime.MinValue)
             {
-                TodayTotalUsage += DateTime.Now - CurrentSessionStart;
+                TimeSpan usedTime = DateTime.Now - CurrentSessionStart;
+                TodayTotalUsage += usedTime;
                 CurrentSessionStart = DateTime.MinValue;
                 Model.TodayUsageDisplay = TodayTotalUsage.ToString(@"hh\:mm\:ss");
             }
@@ -108,7 +129,7 @@ namespace Timer
                     Model.TodayUsageDisplay = TodayTotalUsage.ToString(@"hh\:mm\:ss");
                 }
 
-                // 自动切换到下一阶段
+
                 if (Model.State == TimerState.Working || Model.State == TimerState.Notifying)
                 {
                     PlayAlarmSound("Alarm04.wav");
@@ -118,6 +139,7 @@ namespace Timer
                 else
                 {
                     // Play end of break sound
+                    Model.State = TimerState.Stopped;
                     PlayAlarmSound("Ring01.wav");
                 }
             }

@@ -58,7 +58,7 @@ namespace Timer
             SaveData();
         }
 
-        public UsageRecord GetTodayUsage()
+        public UsageRecord? GetTodayUsage()
         {
             return _usageRecords.FirstOrDefault(r => r.Date == DateTime.Today);
         }

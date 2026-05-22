@@ -13,14 +13,7 @@ namespace Timer
         public NotifyViewModel(TimerModel model)
         {
             _model = model;
-            //_model = new TimerModel
-            //{
-            //    NotificationMessage = model.NotificationMessage,
-            //    RemainingTimeDisplay = model.RemainingTimeDisplay,
-            //    Progress = model.Progress
-            //};
-            //TimerService timerService = new TimerService(_model);
-            //timerService.StartWork();
+
             _model.PropertyChanged += OnModelPropertyChanged;
             CloseCommand = new RelayCommand(_ => CloseRequested?.Invoke());
         }
@@ -43,7 +36,7 @@ namespace Timer
 
         public event Action CloseRequested;
 
-        private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(TimerModel.Progress))
             {
@@ -68,9 +61,9 @@ namespace Timer
                 ProgressColor = new SolidColorBrush(Color.FromRgb(244, 67, 54));  // 红色
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected virtual void OnPropertyChanged(string propertyName = null)
+        protected virtual void OnPropertyChanged(string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

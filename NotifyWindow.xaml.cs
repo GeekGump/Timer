@@ -1,26 +1,78 @@
-﻿using System.Windows;
+﻿using HandyControl.Controls;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using Timer;
-
+using Notification = HandyControl.Controls.Notification;
 
 namespace Timer
 {
     public partial class NotifyWindow : UserControl
     {
         public NotifyViewModel notifyViewModel;
+        private RoundWindow? notification;
         public NotifyWindow(TimerModel model)
         {
             InitializeComponent();
 
             // 使用相同的数据模型创建通知视图模型
             notifyViewModel = new NotifyViewModel(model);
-            //notifyViewModel.CloseRequested += CloseWindow;
+
+            notifyViewModel.CloseRequested += CloseWindow;
             this.DataContext = notifyViewModel;
+            model.StateChanged += Model_StateChanged;
+        }
+
+        private void Model_StateChanged(object? sender, TimerState e)
+        {
+            ChangeWindowSize(e);
+        }
+
+        public void SetNotification(RoundWindow notification)
+        {
+            this.notification = notification;
+            ChangeWindowSize(notifyViewModel._model.State);
+
         }
 
         private void CloseWindow()
         {
-            //Close();
+            notification?.Hide();
+        }
+
+        private void ChangeWindowSize(TimerState state)
+        {
+            if (notification == null)
+                return;
+            if (state == TimerState.Working)
+            {
+                this.Width = 300;
+                this.Height = 300;
+                notification.Top = SystemParameters.WorkArea.Height - notification.ActualHeight*0.9;
+                notification.Left = SystemParameters.WorkArea.Width - notification.ActualHeight*1.15;
+            }
+            else if (state == TimerState.Breaking)
+            {
+                this.Width = 600;
+                this.Height = 400;
+                notification.Top = (SystemParameters.WorkArea.Height - notification.ActualHeight) / 2;
+                notification.Left = (SystemParameters.WorkArea.Width - notification.ActualWidth) / 2;
+            }
+            else if (state == TimerState.Notifying)
+            {
+                this.Width = 300;
+                this.Height = 300;
+                notification.Top = SystemParameters.WorkArea.Height - notification.ActualHeight*0.9;
+                notification.Left = SystemParameters.WorkArea.Width - notification.ActualHeight*1.15;
+            }
+            else
+            {
+                this.Width = 300;
+                this.Height = 300;
+                notification.Top = SystemParameters.WorkArea.Height - notification.ActualHeight * 0.9;
+                notification.Left = SystemParameters.WorkArea.Width - notification.ActualHeight * 1.15;
+                notification.Hide();
+            }
         }
     }
 

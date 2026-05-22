@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Timer"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance Type=local:MainViewModel}"
-        Title="Timer" Height="450" Width="400" 
+        Title="Timer" Height="460" Width="400" 
         WindowStartupLocation="CenterScreen" ShowInTaskbar="True"
         Closing="Window_Closing">
     <Window.Resources>
@@ -17,6 +17,8 @@
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+        
+        
     </Window.Resources>
     <Grid x:Name="TimerGrid" Background="#ffffff">
         <Grid.RowDefinitions>
@@ -131,10 +133,17 @@
                         </StackPanel>
                     </StackPanel>
                 </Border>
-
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5"> 
+                <ToggleButton 
+                x:Name="AutoStartToggle"
+                Style="{StaticResource ToggleButtonSwitch.Small}"
+                Checked="AutoStartToggle_Checked"
+                Unchecked="AutoStartToggle_Unchecked" Margin="5"/>
+                    <TextBlock FontWeight="Bold" FontSize="14" Margin="5">开机自启</TextBlock>
+                </StackPanel>
 
                 <!-- 系统托盘图标（HandyControl） -->
-                <hc:NotifyIcon x:Name="TrayIcon"
+                <hc:NotifyIcon x:Name="TrayIcon" 
                    Token="{x:Static local:AppIcons.NotifyIcon}"
                     Text="我的应用"
                     Visibility="Visible"
@@ -154,24 +163,27 @@
                         </ContextMenu>
                     </hc:NotifyIcon.ContextMenu>
                 </hc:NotifyIcon>
+                <!--
+                <Button Style="{StaticResource ModernButton}" Click="Button_Click">测试</Button>
+                -->
             </StackPanel>
         </ScrollViewer>
 
         <!-- 操作按钮 -->
         <Border Grid.Row="2" Background="#f8f9fa" BorderThickness="0,1,0,0" BorderBrush="#e9ecef">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <Button Content="开始工作" 
+                <Button Content="开始" 
                         Command="{Binding StartWorkCommand}"
                         Style="{StaticResource ModernButton}"/>
-
-                <Button Content="开始休息" 
+                <!--
+                <Button Content="休息" 
                         Command="{Binding StartBreakCommand}"
-                        Style="{StaticResource ModernButton}"
-                        Background="#2196F3"/>
-
-                <Button Content="停止" 
+                        Style="{StaticResource ModernButton}"/>
+                -->
+                    <Button Content="停止" 
                         Command="{Binding StopCommand}"
                         Style="{StaticResource StopButton}"/>
+
             </StackPanel>
         </Border>
         

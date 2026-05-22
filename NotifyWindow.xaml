@@ -4,19 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Timer"
-             mc:Ignorable="d" Background="Azure"
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance Type=local:NotifyViewModel}">
+             mc:Ignorable="d" Background="Transparent"
+             d:DesignHeight="200" d:DesignWidth="300" d:DataContext="{d:DesignInstance Type=local:NotifyViewModel}">
     <UserControl.Resources>
         <DropShadowEffect x:Key="ShadowEffect" BlurRadius="20" ShadowDepth="0" Color="#40000000"/>
     </UserControl.Resources>
 
     <Border Background="Transparent"
+            CornerRadius="15"
             Margin="15">
     <Border Background="White" 
             CornerRadius="15" 
             Margin="0"
             Effect="{StaticResource ShadowEffect}">
-        <Grid>
+        <Grid x:Name="GridContent">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -39,7 +40,7 @@
 
             <!-- 消息内容 -->
             <TextBlock Grid.Row="1" 
-                       Text="{Binding Message}"
+                       Text="{Binding _model.NotificationMessage}"
                        FontSize="18"
                        FontWeight="SemiBold"
                        Foreground="#333"

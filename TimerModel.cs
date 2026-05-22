@@ -36,6 +36,8 @@ namespace Timer
 
         public TimerSettings Settings { get; set; } = new TimerSettings();
 
+        public event EventHandler<TimerState>? StateChanged;
+
         public TimerModel()
         {
              var time = TimeSpan.FromMinutes(Settings.WorkTime);
@@ -81,6 +83,7 @@ namespace Timer
                 _currentState = value;
                 OnPropertyChanged(nameof(TextColor));
                 OnPropertyChanged();
+                StateChanged?.Invoke(this, State);
             }
         }
 
@@ -121,6 +124,14 @@ namespace Timer
                 TimerState.Working => "工作中...",
                 TimerState.Breaking => "休息中...",
                 TimerState.Notifying => "即将休息!",
+                _ => "准备开始"
+            };
+
+            NotificationMessage = State switch
+            {
+                TimerState.Working => "工作中...",
+                TimerState.Breaking => "休息中...",
+                TimerState.Notifying => "工作时间剩余",
                 _ => "准备开始"
             };
         }
